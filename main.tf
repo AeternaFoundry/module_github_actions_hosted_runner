@@ -13,5 +13,12 @@ resource "github_actions_hosted_runner" "actions_hosted_runners" {
     id     = each.value.image.id
     source = each.value.image.source
   }
+
+  dynamic "timeouts" {
+    for_each = each.value.timeouts != null ? [each.value.timeouts] : []
+    content {
+      delete = timeouts.value.delete
+    }
+  }
 }
 

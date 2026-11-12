@@ -13,6 +13,8 @@ Optional:
     - image_version
     - maximum_runners
     - public_ip_enabled
+    - timeouts (block):
+        - delete (optional)
 EOT
 
   type = map(object({
@@ -27,6 +29,9 @@ EOT
       id     = string
       source = optional(string)
     })
+    timeouts = optional(object({
+      delete = optional(string)
+    }))
   }))
   validation {
     condition = alltrue([
@@ -42,7 +47,7 @@ EOT
         v.image.source == null || (contains(["github", "partner", "custom"], v.image.source))
       )
     ])
-    error_message = "must be one of: github, partner, custom"
+    error_message = "must be one of: \"github\", \"partner\", \"custom\""
   }
   validation {
     condition = alltrue([
